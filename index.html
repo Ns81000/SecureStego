@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Secure file encryption with steganography - Zero-knowledge, client-side encryption that embeds keys in beautiful abstract images">
+    <meta name="keywords" content="encryption, steganography, file security, AES-256, privacy, zero-knowledge">
+    <meta name="author" content="SecureStego Vault">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' ws:">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="no-referrer">
+    
+    <!-- Social Meta Tags -->
+    <meta property="og:title" content="SecureStego Vault - Secure File Encryption">
+    <meta property="og:description" content="Client-side file encryption with steganography">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#0a0a0f">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+    
+    <title>SecureStego Vault - Secure File Encryption with Steganography</title>
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/variables.css">
+    <link rel="stylesheet" href="./css/components.css">
+    <link rel="stylesheet" href="./css/utilities.css">
+    <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Main Content -->
+    <main id="main-content" class="main" role="main">
+        <div class="container">
+            <!-- Brand -->
+            <div class="brand-section">
+                <svg class="brand-icon" width="44" height="44" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <rect width="32" height="32" rx="8" fill="url(#logo-gradient)"/>
+                    <path d="M16 8L8 12V20L16 24L24 20V12L16 8Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                    <circle cx="16" cy="16" r="3" fill="white"/>
+                    <defs>
+                        <linearGradient id="logo-gradient" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#a855f7"/>
+                            <stop offset="1" stop-color="#7c3aed"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1 class="brand-name">SecureStego Vault</h1>
+                <p class="brand-tagline">Client-side file encryption with steganography</p>
+            </div>
+
+            <!-- Tab Navigation -->
+            <nav class="tabs" role="tablist" aria-label="Main navigation">
+                <button class="tab active" id="encryptTab" role="tab" aria-selected="true" aria-controls="encrypt-panel">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M5 8V6C5 3.79086 6.79086 2 9 2H10C12.2091 2 14 3.79086 14 6V8M3 8H16C17.1046 8 18 8.89543 18 10V16C18 17.1046 17.1046 18 16 18H3C1.89543 18 1 17.1046 1 16V10C1 8.89543 1.89543 8 3 8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Encrypt</span>
+                </button>
+                <button class="tab" id="decryptTab" role="tab" aria-selected="false" aria-controls="decrypt-panel">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M5 8V6C5 3.79086 6.79086 2 9 2H10C12.2091 2 14 3.79086 14 6M3 8H16C17.1046 8 18 8.89543 18 10V16C18 17.1046 17.1046 18 16 18H3C1.89543 18 1 17.1046 1 16V10C1 8.89543 1.89543 8 3 8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Decrypt</span>
+                </button>
+                <button class="tab" id="aboutTab" role="tab" aria-selected="false" aria-controls="about-panel">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2"/>
+                        <path d="M10 14V10M10 6H10.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span>About</span>
+                </button>
+            </nav>
+
+            <!-- Encrypt Panel -->
+            <div class="panel active" id="encrypt-panel" role="tabpanel" aria-labelledby="encryptTab">
+                <div class="panel-content">
+                    <h2 class="panel-title">Encrypt Your Files</h2>
+                    <p class="panel-description">Secure your files with military-grade encryption. Your encryption key will be hidden inside a beautiful abstract image.</p>
+                    
+                    <!-- File Upload Zone -->
+                    <div class="upload-zone" id="encryptUploadZone" tabindex="0" role="button" aria-label="Upload file for encryption">
+                        <input type="file" id="encryptFileInput" class="upload-input" aria-label="File input for encryption">
+                        <div class="upload-content">
+                            <svg class="upload-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <rect x="8" y="16" width="48" height="40" rx="4" stroke="currentColor" stroke-width="2.5" stroke-dasharray="4 4"/>
+                                <path d="M32 24V40M26 30L32 24L38 30" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <h2 class="upload-title">Drag & Drop File Here</h2>
+                            <p class="upload-subtitle">or click to browse</p>
+                            <p class="upload-info">Maximum file size: 1GB</p>
+                        </div>
+                        <div class="upload-file-info hidden" id="encryptFileInfo">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M9 12H15M12 9V15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <div class="file-details">
+                                <p class="file-name" id="encryptFileName">No file selected</p>
+                                <p class="file-size" id="encryptFileSize">0 KB</p>
+                            </div>
+                            <button class="file-remove" id="encryptFileRemove" aria-label="Remove selected file">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- PIN Input -->
+                    <div class="pin-section">
+                        <label class="pin-label" for="encryptPin1">Enter 6-Digit PIN</label>
+                        <div class="pin-input-group" id="encryptPinGroup">
+                            <input type="tel" class="pin-box" id="encryptPin1" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="PIN digit 1">
+                            <input type="tel" class="pin-box" id="encryptPin2" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="PIN digit 2">
+                            <input type="tel" class="pin-box" id="encryptPin3" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="PIN digit 3">
+                            <input type="tel" class="pin-box" id="encryptPin4" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="PIN digit 4">
+                            <input type="tel" class="pin-box" id="encryptPin5" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="PIN digit 5">
+                            <input type="tel" class="pin-box" id="encryptPin6" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="PIN digit 6">
+                        </div>
+                        <p class="pin-hint">Choose a strong, random 6-digit PIN. Never share this PIN through the same channel as your files.</p>
+                    </div>
+
+                    <!-- Action Button -->
+                    <button class="btn btn-primary btn-lg" id="encryptButton" disabled>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M10 2L2 6V14L10 18L18 14V6L10 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Encrypt File</span>
+                    </button>
+
+                    <!-- Progress Indicator -->
+                    <div class="progress-container hidden" id="encryptProgress">
+                        <div class="progress-header">
+                            <p class="progress-title" id="encryptProgressTitle">Encrypting your file...</p>
+                            <p class="progress-percentage" id="encryptProgressPercent">0%</p>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="encryptProgressFill" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <p class="progress-stat" id="encryptProgressStat">0 MB / 0 MB</p>
+                            <p class="progress-stat" id="encryptProgressSpeed">Speed: 0 MB/s | ETA: --</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Decrypt Panel -->
+            <div class="panel" id="decrypt-panel" role="tabpanel" aria-labelledby="decryptTab" hidden>
+                <div class="panel-content">
+                    <h2 class="panel-title">Decrypt Your Files</h2>
+                    <p class="panel-description">Upload your encrypted file, key image, and enter your PIN to decrypt.</p>
+                    
+                    <!-- Encrypted File Upload -->
+                    <div class="upload-zone compact" id="decryptFileUploadZone" tabindex="0" role="button" aria-label="Upload encrypted file">
+                        <input type="file" id="decryptFileInput" class="upload-input" aria-label="Encrypted file input">
+                        <div class="upload-content">
+                            <svg class="upload-icon-sm" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M16 4V20M10 14L16 20L22 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <p class="upload-title-sm">Upload Encrypted File</p>
+                        </div>
+                        <div class="upload-file-info hidden" id="decryptFileInfo">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M4 4H12L16 8V16H4V4Z" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                            <div class="file-details">
+                                <p class="file-name" id="decryptFileName">No file selected</p>
+                            </div>
+                            <button class="file-remove" id="decryptFileRemove" aria-label="Remove encrypted file">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Key Image Upload -->
+                    <div class="upload-zone compact" id="decryptImageUploadZone" tabindex="0" role="button" aria-label="Upload key image">
+                        <input type="file" id="decryptImageInput" class="upload-input" accept="image/png" aria-label="Key image input">
+                        <div class="upload-content">
+                            <svg class="upload-icon-sm" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <rect x="4" y="4" width="24" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+                                <circle cx="10" cy="10" r="2" fill="currentColor"/>
+                                <path d="M28 20L22 14L10 26" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <p class="upload-title-sm">Upload Key Image (PNG)</p>
+                        </div>
+                        <div class="upload-file-info hidden" id="decryptImageInfo">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <rect x="2" y="2" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                            <div class="file-details">
+                                <p class="file-name" id="decryptImageName">No image selected</p>
+                            </div>
+                            <button class="file-remove" id="decryptImageRemove" aria-label="Remove key image">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- PIN Input -->
+                    <div class="pin-section">
+                        <label class="pin-label" for="decryptPin1">Enter Your 6-Digit PIN</label>
+                        <div class="pin-input-group" id="decryptPinGroup">
+                            <input type="tel" class="pin-box" id="decryptPin1" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="PIN digit 1">
+                            <input type="tel" class="pin-box" id="decryptPin2" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="PIN digit 2">
+                            <input type="tel" class="pin-box" id="decryptPin3" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="PIN digit 3">
+                            <input type="tel" class="pin-box" id="decryptPin4" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="PIN digit 4">
+                            <input type="tel" class="pin-box" id="decryptPin5" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="PIN digit 5">
+                            <input type="tel" class="pin-box" id="decryptPin6" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="PIN digit 6">
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <button class="btn btn-primary btn-lg" id="decryptButton" disabled>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M5 8V6C5 3.79086 6.79086 2 9 2H10C12.2091 2 14 3.79086 14 6M3 8H16C17.1046 8 18 8.89543 18 10V16C18 17.1046 17.1046 18 16 18H3C1.89543 18 1 17.1046 1 16V10C1 8.89543 1.89543 8 3 8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Decrypt File</span>
+                    </button>
+
+                    <!-- Progress Indicator -->
+                    <div class="progress-container hidden" id="decryptProgress">
+                        <div class="progress-header">
+                            <p class="progress-title" id="decryptProgressTitle">Decrypting your file...</p>
+                            <p class="progress-percentage" id="decryptProgressPercent">0%</p>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="decryptProgressFill" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <p class="progress-stat" id="decryptProgressStat">0 MB / 0 MB</p>
+                            <p class="progress-stat" id="decryptProgressSpeed">Speed: 0 MB/s | ETA: --</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Panel -->
+            <div class="panel" id="about-panel" role="tabpanel" aria-labelledby="aboutTab" hidden>
+                <div class="panel-content">
+                    <h2 class="panel-title">About SecureStego Vault</h2>
+                    
+                    <section class="about-section">
+                        <h2 class="section-title">How It Works</h2>
+                        <div class="steps">
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Upload & Encrypt</h3>
+                                    <p class="step-description">Select your file and enter a 6-digit PIN. The file is encrypted using AES-256-GCM encryption.</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Key Embedding</h3>
+                                    <p class="step-description">Your encryption key is hidden inside a procedurally generated abstract image using steganography.</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Share Securely</h3>
+                                    <p class="step-description">Share the encrypted file and key image. Send the PIN through a separate, secure channel.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="about-section">
+                        <h2 class="section-title">Security Features</h2>
+                        <ul class="feature-list">
+                            <li class="feature-item">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M16 6L7 15L3 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span><strong>AES-256-GCM:</strong> Military-grade encryption with authenticated encryption</span>
+                            </li>
+                            <li class="feature-item">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M16 6L7 15L3 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span><strong>PBKDF2-SHA256:</strong> 100,000 iterations for strong key derivation</span>
+                            </li>
+                            <li class="feature-item">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M16 6L7 15L3 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span><strong>Zero-Knowledge:</strong> All processing happens in your browser - nothing sent to servers</span>
+                            </li>
+                            <li class="feature-item">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M16 6L7 15L3 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span><strong>LSB Steganography:</strong> Encryption keys hidden in images using least significant bit encoding</span>
+                            </li>
+                            <li class="feature-item">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M16 6L7 15L3 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span><strong>HMAC Integrity:</strong> SHA-256 HMAC ensures data hasn't been tampered with</span>
+                            </li>
+                            <li class="feature-item">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M16 6L7 15L3 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span><strong>Open Source:</strong> Fully transparent code - audit it yourself on GitHub</span>
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section class="about-section">
+                        <h2 class="section-title">Best Practices</h2>
+                        <div class="warning-box">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M12 9V13M12 17H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <div>
+                                <p class="warning-title">Important Security Tips:</p>
+                                <ul class="warning-list">
+                                    <li>Never share your PIN through the same channel as your files (e.g., don't email all three together)</li>
+                                    <li>Use a strong, random 6-digit PIN - avoid birthdays or simple patterns</li>
+                                    <li>Anyone with all three components (encrypted file, key image, and PIN) can decrypt your file</li>
+                                    <li>Delete the original unencrypted file and encryption materials after successful transfer</li>
+                                    <li>For maximum security, share the PIN verbally or through a separate encrypted messenger</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="about-section">
+                        <h2 class="section-title">Frequently Asked Questions</h2>
+                        <div class="faq">
+                            <details class="faq-item">
+                                <summary class="faq-question">Is my data sent to any server?</summary>
+                                <p class="faq-answer">No. All encryption, decryption, and image generation happen entirely in your browser using the Web Crypto API. Your files never leave your device.</p>
+                            </details>
+                            <details class="faq-item">
+                                <summary class="faq-question">What if I forget my PIN?</summary>
+                                <p class="faq-answer">Unfortunately, if you lose your PIN, the encrypted file cannot be recovered. The encryption is designed to be unbreakable without the correct PIN.</p>
+                            </details>
+                            <details class="faq-item">
+                                <summary class="faq-question">What file types are supported?</summary>
+                                <p class="faq-answer">All file types up to 1GB are supported - documents, images, videos, archives, and more.</p>
+                            </details>
+                            <details class="faq-item">
+                                <summary class="faq-question">Can I use this on mobile devices?</summary>
+                                <p class="faq-answer">Yes! SecureStego Vault works on all modern mobile browsers (iOS Safari 14+, Android Chrome 90+).</p>
+                            </details>
+                            <details class="faq-item">
+                                <summary class="faq-question">Is the key image visible in the generated art?</summary>
+                                <p class="faq-answer">No. The encryption metadata is hidden using LSB steganography, making it invisible to the human eye and undetectable without specialized analysis.</p>
+                            </details>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">
+                    <a href="docs/security.md" class="footer-link">Security Details</a>
+                    <span class="footer-separator">•</span>
+                    <a href="https://github.com/Ns81000/SecureStego" class="footer-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    <span class="footer-separator">•</span>
+                    <span>Built with ❤️ for privacy</span>
+                </p>
+                <p class="footer-copyright">© 2026 SecureStego Vault. Open source under MIT License.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal" role="dialog" aria-labelledby="successModalTitle" aria-modal="true" hidden>
+        <div class="modal-overlay" id="successModalOverlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon success">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="3"/>
+                        <path d="M16 24L21 29L32 18" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h2 class="modal-title" id="successModalTitle">Encryption Complete!</h2>
+                <button class="modal-close" id="successModalClose" aria-label="Close modal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description">Your files are ready for download:</p>
+                <ul class="modal-file-list">
+                    <li class="modal-file-item">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M8 2L2 5V11L8 14L14 11V5L8 2Z" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span id="successEncryptedFile">document.pdf.encrypted</span>
+                    </li>
+                    <li class="modal-file-item">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span>key-image.png</span>
+                    </li>
+                </ul>
+                <div class="modal-warning">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M10 7V11M10 14H10.01M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                    <p>Share all 3 items with the receiver:<br>
+                    1. Encrypted file<br>
+                    2. Key image<br>
+                    3. Your 6-digit PIN (through a <strong>separate secure channel</strong>)</p>
+                </div>
+            </div>
+            <div class="modal-footer modal-footer-stack">
+                <button class="btn btn-primary" id="downloadEncryptedBtn">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M9 2V12M5 8L9 12L13 8M2 14H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Download Encrypted File
+                </button>
+                <button class="btn btn-primary btn-secondary-accent" id="downloadKeyImageBtn">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M9 2V12M5 8L9 12L13 8M2 14H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Download Key Image
+                </button>
+                <button class="btn btn-outline" id="downloadZipBtn">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M3 3H15V15H3V3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                        <path d="M7 3V15M9 5H7M9 7H7M9 9H7M9 11H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    Download as ZIP
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal" id="errorModal" role="dialog" aria-labelledby="errorModalTitle" aria-modal="true" hidden>
+        <div class="modal-overlay" id="errorModalOverlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon error">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="3"/>
+                        <path d="M18 18L30 30M30 18L18 30" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h2 class="modal-title" id="errorModalTitle">Error</h2>
+                <button class="modal-close" id="errorModalClose" aria-label="Close modal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description" id="errorMessage">An error occurred</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="errorModalBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="./js/app.js"></script>
+</body>
+</html>

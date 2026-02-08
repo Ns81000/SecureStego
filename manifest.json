@@ -1,0 +1,23 @@
+{
+  "name": "SecureStego Vault",
+  "short_name": "StegoVault",
+  "description": "Secure file encryption with steganography - Zero-knowledge, client-side encryption",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#a855f7",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "./assets/icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["security", "utilities", "productivity"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "scope": "./",
+  "prefer_related_applications": false
+}
